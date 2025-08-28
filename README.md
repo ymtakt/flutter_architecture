@@ -73,6 +73,7 @@
 └── main.dart
 ```
 
+```mermaid
 sequenceDiagram
 participant UI as ui/<br/>(Page/Handler/ViewModel)
 participant Logic as model/logic/<br/>(UseCase/Notifier)
@@ -91,6 +92,7 @@ participant External as external/<br/>(API Client)
     Repository-->>Logic: Entity
     Logic->>Logic: 状態更新
     Logic-->>UI: AsyncValue<Entity>
+```
 
 ## external
 
@@ -152,6 +154,8 @@ participant External as external/<br/>(API Client)
 - この state を管理する Notifier を定義する
 
 ### shared
+
+共通 Widget
 
 #### functional
 
