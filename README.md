@@ -73,30 +73,9 @@
 └── main.dart
 ```
 
-```mermaid
-sequenceDiagram
-participant UI as ui/<br/>(Page/Handler/ViewModel)
-participant Logic as model/logic/<br/>(UseCase/Notifier)
-participant Repository as model/repository/<br/>(Repository)
-participant Service as model/service/<br/>(Service)
-participant External as external/<br/>(API Client)
-
-    UI->>Logic: ユーザーアクション
-    Logic->>Repository: ビジネスロジック実行
-    Repository->>Service: データ取得/更新
-    Service->>External: API呼び出し
-    External-->>Service: Response (生データ)
-    Service->>Service: 生データ → DTO変換
-    Service-->>Repository: DTO
-    Repository->>Repository: DTO → Entity変換
-    Repository-->>Logic: Entity
-    Logic->>Logic: 状態更新
-    Logic-->>UI: AsyncValue<Entity>
-```
-
 ## external
 
-- 外界との通信を担当する層です。（設定なども行う）
+- 外界との通信を担当する層（設定なども行う）
 - 基本は service から参照される
 - 例外もある（Flutter エントリーポイントで使う場合や、main でモバイルアプリの世界に入る入り口で使う場合などもある）
 
@@ -105,7 +84,7 @@ participant External as external/<br/>(API Client)
 ### logic
 
 - UseCase や Notifier が定義される
-- Notifier・・・repository または useCase を使用する/アプリケーション全体で管理する状態
+- Notifier・・・PageViewModel の利用範囲を超える Notifier。repository または useCase を使用する/アプリケーション全体で管理する状態
 - UseCase・・・複数の repository を参照する複雑なロジックの作成
 - UI のことは知らない（FLutter は出てこない）
 - feature ごとに分ける
@@ -142,12 +121,14 @@ participant External as external/<br/>(API Client)
 #### handler
 
 - BuildContext OK
+- UI のことを知っている
 - page 内で行われるすべての内容が public メソッドに現れる
 - 処理呼び出し、エラーハンドリングなどの UI 操作・・・これ viewModel??
 
 #### viewModel
 
 - BuildContext NG
+- UI のことは知らない（FLutter は出てこない）
 - ライフサイクルが Page と一致する
 - Page のローディング・エラー・データ取得完了 (AsyncValue) を管理
 - page に必要な state を一つのクラスとして freezed で定義
@@ -159,7 +140,7 @@ participant External as external/<br/>(API Client)
 
 #### functional
 
-- いろんな画面に出てくるグローバルな状態（≒ 通信が必要）と紐づくもの（特定のページとの紐づきが少ないもの）
+- 複数の画面に出てくるグローバルな状態（≒ 通信が必要）と紐づくもの（特定のページとの紐づきが少ないもの）
 - WidgetRef OK
 
 #### functionless
