@@ -73,6 +73,25 @@
 └── main.dart
 ```
 
+sequenceDiagram
+participant UI as ui/<br/>(Page/Handler/ViewModel)
+participant Logic as model/logic/<br/>(UseCase/Notifier)
+participant Repository as model/repository/<br/>(Repository)
+participant Service as model/service/<br/>(Service)
+participant External as external/<br/>(API Client)
+
+    UI->>Logic: ユーザーアクション
+    Logic->>Repository: ビジネスロジック実行
+    Repository->>Service: データ取得/更新
+    Service->>External: API呼び出し
+    External-->>Service: Response (生データ)
+    Service->>Service: 生データ → DTO変換
+    Service-->>Repository: DTO
+    Repository->>Repository: DTO → Entity変換
+    Repository-->>Logic: Entity
+    Logic->>Logic: 状態更新
+    Logic-->>UI: AsyncValue<Entity>
+
 ## external
 
 - 外界との通信を担当する層です。（設定なども行う）
@@ -93,16 +112,17 @@
 
 - アプリケーションで使用される型（Entity）を定義する
 - feature ごとに分ける
+- ドメインオブジェクトなのでデータ変換以外のメソッドを持つことがある
 
 ### repository
 
-- 業務ロジック
+- ビジネスロジック
 - service 層との通信を行う層
 - DTO <-> Entity の変換を行う
 
 ### service
 
-- 業務ロジック
+- ビジネスロジック
 - external 層との通信を行う層
 - repository から参照される
 - feature ごとに分ける
