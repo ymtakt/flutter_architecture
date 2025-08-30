@@ -7,7 +7,6 @@ part 'shared_preferences_client.g.dart';
 /// [SharedPreferencesClient] クラスのインスタンスを提供する。
 @riverpod
 Future<SharedPreferencesAsync> sharedPreferencesClient(Ref ref) async {
-  // ✅ 正しい初期化方法
   return SharedPreferencesAsync();
 }
 
