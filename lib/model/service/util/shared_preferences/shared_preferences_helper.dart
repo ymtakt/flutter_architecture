@@ -16,7 +16,7 @@ enum SharedPreferencesKey {
   bar,
 
   /// children の値。
-  children,
+  todos,
 }
 
 /// shared_preferences パッケージを利用して、値の取得や保存を行うヘルパークラス。
