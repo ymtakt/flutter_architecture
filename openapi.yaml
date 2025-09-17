@@ -1,0 +1,386 @@
+openapi: "3.1.0"
+info:
+  title: "Hono API"
+  description: "Server-side API for architecture-sample-app"
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:8080"
+    description: "Local Server"
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+      description: "Firebase Auth IdToken を入力してください"
+  schemas: {}
+paths:
+  /:
+    get:
+      responses:
+        "200":
+          description: "アプリケーションの疎通確認用のハンドラ"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                required:
+                  - "message"
+                example:
+                  message: "Hello, World!"
+      operationId: "getIndex"
+      tags: []
+      parameters: []
+      summary: "アプリケーションの疎通確認用のハンドラ"
+      security: []
+  /api/todos:
+    get:
+      responses:
+        "200":
+          description: "Todo 一覧の取得に成功"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  todos:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        id:
+                          type: "number"
+                        title:
+                          type: "string"
+                        completed:
+                          type: "boolean"
+                        description:
+                          type: "string"
+                        createdAt:
+                          type: "string"
+                        updatedAt:
+                          type: "string"
+                      required:
+                        - "id"
+                        - "title"
+                        - "completed"
+                        - "description"
+                        - "createdAt"
+                        - "updatedAt"
+                required:
+                  - "todos"
+                example:
+                  todos:
+                    - id: 1
+                      title: "買い物リスト作成"
+                      completed: false
+                      description: "週末の買い物で必要なものをまとめる"
+                      createdAt: "2024-07-01T12:00:00.000Z"
+                      updatedAt: "2024-07-01T12:00:00.000Z"
+        "400":
+          description: "エラー"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "object"
+                    properties:
+                      code:
+                        type: "string"
+                        enum:
+                          - "endpoint.getTodos.fetchFailed.1"
+                        description: |
+                          エラーコード。以下の値が使用されます：
+                          - endpoint.getTodos.fetchFailed.1: FETCH_FAILED - Todo 一覧の取得に失敗しました。
+                    required:
+                      - "code"
+                required:
+                  - "error"
+      operationId: "getApiTodos"
+      tags:
+        - "todos"
+      parameters: []
+      description: "Todo 一覧を取得する"
+    post:
+      responses:
+        "200":
+          description: "Todo の作成に成功"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  todo:
+                    type: "object"
+                    properties:
+                      id:
+                        type: "number"
+                      title:
+                        type: "string"
+                      completed:
+                        type: "boolean"
+                      description:
+                        type: "string"
+                      createdAt:
+                        type: "string"
+                      updatedAt:
+                        type: "string"
+                    required:
+                      - "id"
+                      - "title"
+                      - "completed"
+                      - "description"
+                      - "createdAt"
+                      - "updatedAt"
+                required:
+                  - "todo"
+        "400":
+          description: "エラー"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "object"
+                    properties:
+                      code:
+                        type: "string"
+                        enum:
+                          - "endpoint.getTodos.fetchFailed.1"
+                        description: |
+                          エラーコード。以下の値が使用されます：
+                          - endpoint.getTodos.fetchFailed.1: FETCH_FAILED - Todo 一覧の取得に失敗しました。
+                    required:
+                      - "code"
+                required:
+                  - "error"
+      operationId: "postApiTodos"
+      tags:
+        - "todo"
+      parameters: []
+      description: "Todo を作成する"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                title:
+                  type: "string"
+                description:
+                  type: "string"
+                completed:
+                  type: "boolean"
+              required:
+                - "title"
+                - "description"
+                - "completed"
+  /api/todos/{todoId}:
+    get:
+      responses:
+        "200":
+          description: "Todo の取得に成功"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  todo:
+                    type: "object"
+                    properties:
+                      id:
+                        type: "number"
+                      title:
+                        type: "string"
+                      completed:
+                        type: "boolean"
+                      description:
+                        type: "string"
+                      createdAt:
+                        type: "string"
+                      updatedAt:
+                        type: "string"
+                    required:
+                      - "id"
+                      - "title"
+                      - "completed"
+                      - "description"
+                      - "createdAt"
+                      - "updatedAt"
+                required:
+                  - "todo"
+                example:
+                  todo:
+                    id: 1
+                    title: "買い物リスト作成"
+                    completed: false
+                    description: "週末の買い物で必要なものをまとめる"
+                    createdAt: "2024-07-01T12:00:00.000Z"
+                    updatedAt: "2024-07-01T12:00:00.000Z"
+        "400":
+          description: "エラー"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "object"
+                    properties:
+                      code:
+                        type: "string"
+                        enum:
+                          - "endpoint.getTodos.fetchFailed.1"
+                        description: |
+                          エラーコード。以下の値が使用されます：
+                          - endpoint.getTodos.fetchFailed.1: FETCH_FAILED - Todo 一覧の取得に失敗しました。
+                    required:
+                      - "code"
+                required:
+                  - "error"
+      operationId: "getApiTodosByTodoId"
+      tags:
+        - "todo"
+      parameters:
+        - schema:
+            type: "string"
+          in: "path"
+          name: "todoId"
+          required: true
+      description: "Todo を取得する"
+    put:
+      responses:
+        "200":
+          description: "Todo の更新に成功"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  todo:
+                    type: "object"
+                    properties:
+                      id:
+                        type: "number"
+                      title:
+                        type: "string"
+                      completed:
+                        type: "boolean"
+                      description:
+                        type: "string"
+                      createdAt:
+                        type: "string"
+                      updatedAt:
+                        type: "string"
+                    required:
+                      - "id"
+                      - "title"
+                      - "completed"
+                      - "description"
+                      - "createdAt"
+                      - "updatedAt"
+                required:
+                  - "todo"
+                example:
+                  todo:
+                    id: 1
+                    title: "買い物リスト作成"
+                    completed: false
+                    description: "週末の買い物で必要なものをまとめる"
+                    createdAt: "2024-07-01T12:00:00.000Z"
+                    updatedAt: "2024-07-01T12:00:00.000Z"
+        "400":
+          description: "エラー"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "object"
+                    properties:
+                      code:
+                        type: "string"
+                        enum:
+                          - "endpoint.getTodos.fetchFailed.1"
+                        description: |
+                          エラーコード。以下の値が使用されます：
+                          - endpoint.getTodos.fetchFailed.1: FETCH_FAILED - Todo 一覧の取得に失敗しました。
+                    required:
+                      - "code"
+                required:
+                  - "error"
+      operationId: "putApiTodosByTodoId"
+      tags:
+        - "todo"
+      parameters:
+        - in: "path"
+          name: "todoId"
+          schema:
+            type: "string"
+          required: true
+      description: "Todo を更新する"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                title:
+                  type: "string"
+                description:
+                  type: "string"
+                completed:
+                  type: "boolean"
+              required:
+                - "title"
+                - "description"
+                - "completed"
+    delete:
+      responses:
+        "200":
+          description: "Todo の削除に成功"
+          content:
+            application/json:
+              schema:
+                type: "null"
+                description: "削除成功（レスポンスなし）"
+        "400":
+          description: "エラー"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "object"
+                    properties:
+                      code:
+                        type: "string"
+                        enum:
+                          - "endpoint.getTodos.fetchFailed.1"
+                        description: |
+                          エラーコード。以下の値が使用されます：
+                          - endpoint.getTodos.fetchFailed.1: FETCH_FAILED - Todo 一覧の取得に失敗しました。
+                    required:
+                      - "code"
+                required:
+                  - "error"
+      operationId: "deleteApiTodosByTodoId"
+      tags:
+        - "todo"
+      parameters:
+        - schema:
+            type: "string"
+          in: "path"
+          name: "todoId"
+          required: true
+      description: "Todo を削除する"

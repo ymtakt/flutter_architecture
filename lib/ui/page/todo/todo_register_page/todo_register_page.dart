@@ -13,7 +13,9 @@ class TodoRegisterPage extends ConsumerWidget {
       body: TodoForm(
         handleSubmit: (todo) {
           // 登録処理
-          ref.read(todoRegisterDetailPageHandlerProvider).createTodo(todo);
+          ref
+              .read(todoRegisterDetailPageHandlerProvider)
+              .createTodo(todo, context);
         },
         submitButtonText: '登録する',
       ),

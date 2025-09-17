@@ -1,0 +1,65 @@
+# See https://dart.dev/guides/libraries/private-files
+
+# Files and directories created by pub
+.dart_tool/
+.buildlog
+.packages
+.project
+.pub/
+build/
+**/packages/
+
+# Files created by dart2js
+# (Most Dart developers will use pub build to compile Dart, use/modify these
+#  rules if you intend to use dart2js directly
+#  Convention is to use extension '.dart.js' for Dart compiled to Javascript to
+#  differentiate from explicit Javascript files)
+*.dart.js
+*.part.js
+*.js.deps
+*.js.map
+*.info.json
+
+# Directory created by dartdoc
+doc/api/
+
+# Don't commit pubspec lock file
+# (Library packages only! Remove pattern if developing an application package)
+pubspec.lock
+
+# Don’t commit files and directories created by other development environments.
+# For example, if your development environment creates any of the following files,
+# consider putting them in a global ignore file:
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Mac
+.DS_Store
+
+
+# 現在の内容に以下を追加
+
+# IDE/Editor specific files
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS specific files
+Thumbs.db
+ehthumbs.db
+
+# Coverage files (テストカバレッジ)
+coverage/
+lcov.info
+
+# Build artifacts (追加の生成ファイル)
+*.g.dart.backup
+*.freezed.dart.backup
+
+# OpenAPI Generator cache (既に.openapi-generator/はあるが、キャッシュファイルも)
+.openapi-generator-cache

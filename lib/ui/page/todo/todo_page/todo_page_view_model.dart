@@ -22,8 +22,4 @@ class TodoPageViewModel extends _$TodoPageViewModel {
     final todos = await ref.watch(todoRepositoryProvider).fetchTodos();
     return TodoPageState(todos: todos);
   }
-
-  /// Children を作成する。
-  ///
-  /// 作成後、ViewModel をリビルドする。
 }

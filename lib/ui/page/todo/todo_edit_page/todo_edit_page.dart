@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/model/entity/feature/todo.dart';
 import 'package:flutter_architecture/ui/page/todo/todo_edit_page/todo_edit_page_handler.dart';
 import 'package:flutter_architecture/ui/page/todo/todo_edit_page/todo_edit_page_view_model.dart';
 import 'package:flutter_architecture/ui/page/todo/todo_form.dart';
@@ -27,7 +28,13 @@ class TodoEditPage extends ConsumerWidget {
           submitButtonText: '更新する',
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('エラーが発生しました: $error')),
+        error: (error, stack) {
+          if (error is UpdateTodoGeneralException) {
+            Center(child: Text('エラーが発生しました: $error'));
+          }
+          Center(child: Text('エラーが発生しました: $error'));
+          return null;
+        },
       ),
     );
   }

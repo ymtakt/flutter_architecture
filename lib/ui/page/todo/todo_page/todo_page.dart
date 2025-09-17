@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/model/entity/feature/todo.dart';
 import 'package:flutter_architecture/ui/page/todo/todo_page/todo_page_view_model.dart';
 import 'package:flutter_architecture/ui/routing/router_path.dart';
 import 'package:go_router/go_router.dart';
@@ -25,8 +26,11 @@ class TodoPage extends ConsumerWidget {
                   child: Text(data.todos[index].title),
                 ),
               ),
-              error: (error, __) {
-                return Text(error.toString());
+              error: (e, __) {
+                if (e is FetchTodosGeneralException) {
+                  return Text('Todo一覧の取得に失敗しました');
+                }
+                return Text('画面表示に失敗しました');
               },
               loading: () => const CircularProgressIndicator(),
             ),

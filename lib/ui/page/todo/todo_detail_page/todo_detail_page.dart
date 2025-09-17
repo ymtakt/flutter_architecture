@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/model/entity/feature/todo.dart';
 import 'package:flutter_architecture/ui/page/todo/todo_detail_page/todo_detail_page_handler.dart';
 import 'package:flutter_architecture/ui/page/todo/todo_detail_page/todo_detail_page_view_model.dart';
 import 'package:flutter_architecture/ui/routing/router_path.dart';
@@ -50,7 +51,12 @@ class TodoDetailPage extends ConsumerWidget {
                 ],
               ),
             ),
-            error: (error, stackTrace) => Text(error.toString()),
+            error: (error, stackTrace) {
+              if (error is FetchTodoNotFoundException) {
+                return Text('Todoが見つかりません');
+              }
+              return Text(error.toString());
+            },
             loading: () => const CircularProgressIndicator(),
           ),
         ],

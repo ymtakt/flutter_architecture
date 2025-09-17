@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_architecture/external/http/extract_http_request_headers.dart';
+import 'package:flutter_architecture/external/http/http_client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:miracle_api_client/miracle_api_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../entity/feature/todo.dart';
-import '../../../service/feature/todo/todo_dto.dart';
-import '../../../service/feature/todo/todo_service.dart';
+import '../../util/handle_dio_exception.dart';
 
 part 'todo.repository.g.dart';
 
@@ -18,23 +21,62 @@ class TodoRepository {
 
   final Ref _ref;
 
+  /// Todo 用のカスタムエラーマッパー
+  static final ErrorMapper _todoErrorMapper = createErrorMapper({
+    'endpoint.getTodos.fetchFailed.1': () => FetchTodos400Exception(),
+
+    //  サンプル
+    'endpoint.getTodo.notFound.1': () => FetchTodoNotFoundException(),
+    'endpoint.updateTodo.notFound.1': () => UpdateTodoNotFoundException(),
+    'endpoint.deleteTodo.notFound.1': () => DeleteTodoNotFoundException(),
+  });
+
   /// Todo 一覧を取得する。
   ///
   /// 取得に失敗した場合は、空の配列を返す。
   Future<List<Todo>> fetchTodos() async {
-    final todos = await _ref.read(todoServiceProvider).fetchTodos();
-    return todos.map(Todo.fromDto).toList();
+    // これを省略したい場合、ヘルパークラスを作成するのもあり
+    final headers = await _ref.read(extractHttpRequestHeadersProvider)();
+
+    try {
+      final response = await _ref
+          //  httpClientProviderがserviceProviderになるはず
+          .read(httpClientProvider)
+          .getTodosApi()
+          .getApiTodos(headers: headers);
+      return response.data?.todos.map(Todo.fromDto).toList() ?? [];
+    } on DioException catch (e) {
+      // DioException共通に処理する repository util
+      handleDioException(e, errorMapper: _todoErrorMapper);
+    } catch (e) {
+      throw FetchTodosGeneralException();
+    }
   }
 
   /// Todo を取得する。
   ///
   /// 取得に失敗した場合は、例外をスローする。
   Future<Todo> fetchTodoById(String id) async {
-    final todo = await _ref.read(todoServiceProvider).fetchTodoById(id);
-    if (todo == null) {
-      throw FetchTodoByIdException();
+    // これを省略したい場合、ヘルパークラスを作成するのもあり
+    final headers = await _ref.read(extractHttpRequestHeadersProvider)();
+    try {
+      final response = await _ref
+          //  httpClientProviderがserviceProviderになるはず
+          .read(httpClientProvider)
+          .getTodoApi()
+          .getApiTodosByTodoId(todoId: id, headers: headers);
+
+      if (response.data?.todo == null) {
+        throw FetchTodoNotFoundException();
+      }
+
+      return Todo.fromDto(response.data!.todo);
+    } on DioException catch (e) {
+      // DioException共通に処理する repository util
+      handleDioException(e, errorMapper: _todoErrorMapper);
+    } catch (e) {
+      throw FetchTodosGeneralException();
     }
-    return Todo.fromDto(todo);
   }
 
   /// Todo を作成する。
@@ -45,15 +87,30 @@ class TodoRepository {
     required String description,
     required String status,
   }) async {
-    final todoDto = TodoDto(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      title: title,
-      description: description,
-      status: status,
-      createdAt: DateTime.now().toIso8601String(),
-      updatedAt: DateTime.now().toIso8601String(),
+    // これを省略したい場合、ヘルパークラスを作成するのもあり
+    final headers = await _ref.read(extractHttpRequestHeadersProvider)();
+
+    final postApiTodosRequest = PostApiTodosRequest(
+      (b) => b
+        ..title = title
+        ..description = description
+        ..completed = status == 'done',
     );
-    await _ref.read(todoServiceProvider).createTodo(todoDto);
+    try {
+      await _ref
+          //  httpClientProviderがserviceProviderになるはず
+          .read(httpClientProvider)
+          .getTodoApi()
+          .postApiTodos(
+            postApiTodosRequest: postApiTodosRequest,
+            headers: headers,
+          );
+    } on DioException catch (e) {
+      // DioException共通に処理する repository util
+      handleDioException(e, errorMapper: _todoErrorMapper);
+    } catch (e) {
+      throw CreateTodoGeneralException();
+    }
   }
 
   /// Todo を更新する。
@@ -65,27 +122,47 @@ class TodoRepository {
     required String description,
     required String status,
   }) async {
-    final todoDto = TodoDto(
-      id: id,
-      title: title,
-      description: description,
-      status: status,
-      createdAt: '', // 既存のcreatedAtを保持する場合は別途取得が必要
-      updatedAt: DateTime.now().toIso8601String(),
+    final headers = await _ref.read(extractHttpRequestHeadersProvider)();
+    final postApiTodosRequest = PostApiTodosRequest(
+      (b) => b
+        ..title = title
+        ..description = description
+        ..completed = status == 'done',
     );
-    await _ref.read(todoServiceProvider).updateTodo(todoDto);
+    try {
+      await _ref
+          //  httpClientProviderがserviceProviderになるはず
+          .read(httpClientProvider)
+          .getTodoApi()
+          .putApiTodosByTodoId(
+            todoId: id,
+            postApiTodosRequest: postApiTodosRequest,
+            headers: headers,
+          );
+    } on DioException catch (e) {
+      // DioException共通に処理する repository util
+      handleDioException(e, errorMapper: _todoErrorMapper);
+    } catch (e) {
+      throw UpdateTodoGeneralException();
+    }
   }
 
   /// Todo を削除する。
   ///
   /// 削除に失敗した場合は、例外をスローする。
   Future<void> deleteTodo({required String id}) async {
-    await _ref.read(todoServiceProvider).deleteTodoById(id);
+    final headers = await _ref.read(extractHttpRequestHeadersProvider)();
+    try {
+      await _ref
+          //  httpClientProviderがserviceProviderになるはず
+          .read(httpClientProvider)
+          .getTodoApi()
+          .deleteApiTodosByTodoId(todoId: id, headers: headers);
+    } on DioException catch (e) {
+      // DioException共通に処理する repository util
+      handleDioException(e, errorMapper: _todoErrorMapper);
+    } catch (e) {
+      throw DeleteTodoGeneralException();
+    }
   }
 }
-
-/// Todo 一覧の取得に失敗した場合にスローされる例外。
-class FetchTodoException implements Exception {}
-
-/// Todo の取得に失敗した場合にスローされる例外。
-class FetchTodoByIdException implements Exception {}

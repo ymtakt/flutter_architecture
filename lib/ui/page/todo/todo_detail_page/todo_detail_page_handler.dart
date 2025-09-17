@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/model/entity/feature/todo.dart';
 import 'package:flutter_architecture/ui/page/todo/todo_detail_page/todo_detail_page_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -33,14 +34,32 @@ class TodoDetailPageHandler {
           ),
           TextButton(
             onPressed: () async {
-              // 子供を削除するviewModelを呼び出す
-              await _ref
-                  .read(todoDetailPageViewModelProvider(todoId).notifier)
-                  .deleteTodo();
-              if (!context.mounted) {
-                return;
+              try {
+                // 子供を削除するviewModelを呼び出す
+                await _ref
+                    .read(todoDetailPageViewModelProvider(todoId).notifier)
+                    .deleteTodo();
+                if (!context.mounted) {
+                  return;
+                }
+                Navigator.pop(context);
+              } catch (e) {
+                if (e is DeleteTodoGeneralException) {
+                  if (!context.mounted) {
+                    return;
+                  }
+                  // トースト表示
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Todoの削除に失敗しました')));
+                  Navigator.pop(context);
+                }
+                // トースト表示
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Todoの削除に失敗しました')));
+                Navigator.pop(context);
               }
-              Navigator.pop(context);
             },
             child: const Text('削除'),
           ),

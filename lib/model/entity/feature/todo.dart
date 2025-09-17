@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../service/feature/todo/todo_dto.dart';
+import 'package:miracle_api_client/miracle_api_client.dart';
 
 part 'todo.freezed.dart';
 
@@ -35,11 +34,45 @@ class Todo with _$Todo {
     required TodoStatus status,
   }) = _Todo;
 
-  /// [TodoDto] から [Todo] を生成する。
-  factory Todo.fromDto(TodoDto dto) => Todo(
-    id: dto.id,
+  // /// [GetApiTodos200ResponseTodosInner] から [Todo] を生成する。
+  // /// API ModelなのでfromAPIModelと命名するルールにする（公式通り）
+  // factory Todo.fromDto(GetApiTodos200ResponseTodosInner dto) => Todo(
+  //   id: dto.id.toString(),
+  //   title: dto.title,
+  //   description: dto.description,
+  //   status: TodoStatus.notStarted,
+  // );
+
+  /// [GetApiTodos200ResponseTodosInner] から [Todo] を生成する。
+  /// API ModelなのでfromAPIModelと命名するルールにする（公式通り）
+  factory Todo.fromDto(GetApiTodos200ResponseTodosInner dto) => Todo(
+    id: dto.id.toString(),
     title: dto.title,
     description: dto.description,
-    status: TodoStatus.values.firstWhere((e) => e.name == dto.status),
+    status: TodoStatus.notStarted, // completedから判定
   );
 }
+
+/// Todo一覧の取得に関する400エラー例外。
+class FetchTodos400Exception implements Exception {}
+
+/// Todoの一般的な取得エラー例外。
+class FetchTodosGeneralException implements Exception {}
+
+/// Todoが見つからない場合の例外。
+class FetchTodoNotFoundException implements Exception {}
+
+/// Todo作成の一般的なエラー例外。
+class CreateTodoGeneralException implements Exception {}
+
+/// Todo更新時に対象が見つからない場合の例外。
+class UpdateTodoNotFoundException implements Exception {}
+
+/// Todo更新の一般的なエラー例外。
+class UpdateTodoGeneralException implements Exception {}
+
+/// Todo削除時に対象が見つからない場合の例外。
+class DeleteTodoNotFoundException implements Exception {}
+
+/// Todo削除の一般的なエラー例外。
+class DeleteTodoGeneralException implements Exception {}

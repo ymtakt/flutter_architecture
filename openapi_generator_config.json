@@ -1,0 +1,14 @@
+{
+  "openapiGeneratorVersion": "7.9.0",
+  "additionalProperties": {
+    "pubspecMinSdkVersion": "3.8.1",
+    "pubspecMaxSdkVersion": "4.0.0",
+    "pubName": "miracle_api_client"
+  },
+  "additionalCommands": "",
+  "downloadUrlOverride": null,
+  "jarCacheDir": ".dart_tool/openapi_generator_cache",
+  "customGeneratorUrls": [
+    "https://repo1.maven.org/maven2/com/bluetrainsoftware/maven/openapi-dart-generator/7.2/openapi-dart-generator-7.2.jar"
+  ]
+}

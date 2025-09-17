@@ -22,11 +22,47 @@ class TodoEditPageHandler {
     required BuildContext context,
     required Todo todo,
   }) async {
-    // バリデーションを行う
-    // バリデーションが通ったら、Todo情報を更新するviewModelを呼び出す
-    await _ref
-        .read(todoEditPageViewModelProvider(todo.id).notifier)
-        .updateTodo(todo);
-    _ref.invalidate(todoPageViewModelProvider);
+    try {
+      // TODO: バリデーションを行う。
+      await _ref
+          .read(todoEditPageViewModelProvider(todo.id).notifier)
+          .updateTodo(todo);
+      _ref.invalidate(todoPageViewModelProvider);
+    } catch (e) {
+      if (e is UpdateTodoGeneralException) {
+        if (!context.mounted) {
+          return;
+        }
+        await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('エラーが発生しました'),
+            content: Text('エラーが発生しました'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('閉じる'),
+              ),
+            ],
+          ),
+        );
+      }
+      if (!context.mounted) {
+        return;
+      }
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('エラーが発生しました'),
+          content: Text('エラーが発生しました'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('閉じる'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
