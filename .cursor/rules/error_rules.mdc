@@ -1,0 +1,8 @@
+---
+description: エラーの取り扱い、実装ルール
+alwaysApply: false
+---
+
+# ルールの内容
+
+ルールの内容は [docs/error_rules.md](../../docs/error_rules.md) に従います。

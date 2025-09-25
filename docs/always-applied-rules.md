@@ -213,6 +213,7 @@ void test('ユーザー認証が成功する場合', () {
 
 - **全体のアーキテクチャ**: [architecture.md](./architecture.md) のルールに従ってください
 - **API エンドポイント API モデルの実装**: [openapi_generator_rules.md](./openapi_generator_rules.md) のルールに従ってください
+- **エラーの取り扱い、実装ルール**: [error_rules.md](./error_rules.md) のルールに従ってください
 - **テスト実装**: [test_rules.md](./test_rules.md) のルールに従ってください
 
 ### 3.2 実装チェックリスト
