@@ -1,8 +1,8 @@
 ---
-description: コメント及びドキュメンテーション
+description: プロジェクト全体に常に適用されるルール
 alwaysApply: false
 ---
 
 # ルールの内容
 
-ルールの内容は [docs/dart_documentation_rules.md](../../docs/dart_documentation_rules.md) に従います。
+ルールの内容は [docs/always-applied-rules.md](../../docs/always-applied-rules.md) に従います。

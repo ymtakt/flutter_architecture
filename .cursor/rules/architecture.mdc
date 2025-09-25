@@ -1,0 +1,8 @@
+---
+description: 全体のアーキテクチャ
+alwaysApply: false
+---
+
+# ルールの内容
+
+ルールの内容は [docs/architecture.md](../../docs/architecture.md) に従います。

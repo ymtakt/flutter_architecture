@@ -4,7 +4,8 @@
 
 Flutter のプロジェクトでは、以下の場所に詳細なルールが定義されています：
 
-- [コメントルール](docs/dart_documentation_rules.md)
+- [常に適用されるルール](docs/always-applied-rules.md)
+- [アーキテクチャ](docs/architecture.md)
 - [テスト実装ルール](docs/test_rules.md)
 - [openapi_generator ルール](docs/openapi_generator_rules.md)
 

@@ -108,6 +108,8 @@
   - Notifier で Entity を取得、キャッシュ、操作する（グローバルな状態管理）
     - Repository 層との通信を行う
   - useCase クラスやトップレベルの関数：業務上必要な計算（例：BMI の計算、配列処理、状態管理を伴わないデータの読み書きメソッドの呼び出し）
+    - useCase の命名はやることの名前 「やる事 UseCase」
+    - メソッドは invoke で確定
 
 - Notifier も viewModel より少なくなる
 - このアプリは handler から 直接 Repository を読んで良いので UseCase はそこまで多くならない
