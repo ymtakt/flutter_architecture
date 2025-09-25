@@ -20,24 +20,29 @@ class TodoEditPageHandler {
   /// Todo情報を更新する
   Future<void> updateTodo({
     required BuildContext context,
-    required Todo todo,
+    required String todoId,
+    required String title,
+    required String description,
+    required String status,
   }) async {
     try {
       // TODO: バリデーションを行う。
       await _ref
-          .read(todoEditPageViewModelProvider(todo.id).notifier)
-          .updateTodo(todo);
+          .read(todoEditPageViewModelProvider(todoId).notifier)
+          .updateTodo(title: title, description: description, status: status);
       _ref.invalidate(todoPageViewModelProvider);
     } catch (e) {
+      if (!context.mounted) {
+        return;
+      }
+
+      // UpdateTodoGeneralException をキャッチした場合は、ダイアログを表示する。
       if (e is UpdateTodoGeneralException) {
-        if (!context.mounted) {
-          return;
-        }
         await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('エラーが発生しました'),
-            content: Text('エラーが発生しました'),
+            title: Text('Todoの更新に失敗しました'),
+            content: Text('Todoの更新に失敗しました'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -46,10 +51,10 @@ class TodoEditPageHandler {
             ],
           ),
         );
-      }
-      if (!context.mounted) {
         return;
       }
+
+      // その他の場合は、汎用的なメッセージを表示する。
       await showDialog(
         context: context,
         builder: (context) => AlertDialog(

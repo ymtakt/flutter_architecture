@@ -34,15 +34,6 @@ class Todo with _$Todo {
     required TodoStatus status,
   }) = _Todo;
 
-  // /// [GetApiTodos200ResponseTodosInner] から [Todo] を生成する。
-  // /// API ModelなのでfromAPIModelと命名するルールにする（公式通り）
-  // factory Todo.fromDto(GetApiTodos200ResponseTodosInner dto) => Todo(
-  //   id: dto.id.toString(),
-  //   title: dto.title,
-  //   description: dto.description,
-  //   status: TodoStatus.notStarted,
-  // );
-
   /// [GetApiTodos200ResponseTodosInner] から [Todo] を生成する。
   /// API ModelなのでfromAPIModelと命名するルールにする（公式通り）
   factory Todo.fromDto(GetApiTodos200ResponseTodosInner dto) => Todo(

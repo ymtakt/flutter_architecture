@@ -1,0 +1,8 @@
+---
+description: コメント及びドキュメンテーション
+alwaysApply: false
+---
+
+# ルールの内容
+
+ルールの内容は [docs/dart_documentation_rules.md](../../docs/dart_documentation_rules.md) に従います。

@@ -12,28 +12,36 @@ class TodoEditPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final viewModelState = ref.watch(todoEditPageViewModelProvider(todoId));
+    final viewModel = ref.watch(todoEditPageViewModelProvider(todoId));
 
     return Scaffold(
       appBar: AppBar(title: const Text('Todo編集')),
-      body: viewModelState.when(
+      body: viewModel.when(
         data: (state) => TodoForm(
           initialTodoData: state.todo,
           handleSubmit: (todo) {
-            // 更新処理
+            // todoを更新する。
             ref
                 .read(todoEditPageHandlerProvider)
-                .updateTodo(context: context, todo: todo);
+                .updateTodo(
+                  context: context,
+                  todoId: todoId,
+                  title: todo.title,
+                  description: todo.description,
+                  status: todo.status.name,
+                );
           },
           submitButtonText: '更新する',
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) {
+          // UpdateTodoGeneralException をキャッチした場合は、特定のメッセージを表示する。
           if (error is UpdateTodoGeneralException) {
-            Center(child: Text('エラーが発生しました: $error'));
+            return Center(child: Text('Todoデータの取得に失敗しました: $error'));
           }
-          Center(child: Text('エラーが発生しました: $error'));
-          return null;
+
+          // その他の場合は、汎用的なメッセージを表示する。
+          return Center(child: Text('エラーが発生しました: $error'));
         },
       ),
     );

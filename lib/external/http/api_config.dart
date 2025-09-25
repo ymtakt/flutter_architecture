@@ -11,7 +11,9 @@ import 'package:openapi_generator_annotations/openapi_generator_annotations.dart
     // serializationLibrary: DioSerializationLibrary.jsonSerializable,
     // useEnumExtension: true,
   ),
-  inputSpec: InputSpec(path: 'openapi.yaml'),
+  // ローカルのバックエンドレポジトリのパスを直接指定./../miracle/backend/openapi.yaml
+  // またはローカルホストでも良い
+  inputSpec: InputSpec(path: './openapi.yaml'),
   generatorName: Generator.dio,
   outputDirectory: 'lib/external/http/generate/api',
 )

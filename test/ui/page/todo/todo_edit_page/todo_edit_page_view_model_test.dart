@@ -133,7 +133,11 @@ void main() {
       // Act：updateTodoを呼び出す。
       await container
           .read(todoEditPageViewModelProvider('1').notifier)
-          .updateTodo(updatedTodo);
+          .updateTodo(
+            title: updatedTodo.title,
+            description: updatedTodo.description,
+            status: updatedTodo.status.name,
+          );
 
       // Assert：updateTodoが呼ばれたことを確認。
       verify(
@@ -191,7 +195,11 @@ void main() {
       await expectLater(
         container
             .read(todoEditPageViewModelProvider('1').notifier)
-            .updateTodo(updatedTodo),
+            .updateTodo(
+              title: updatedTodo.title,
+              description: updatedTodo.description,
+              status: updatedTodo.status.name,
+            ),
         throwsA(isA<UpdateTodoGeneralException>()),
       );
     });

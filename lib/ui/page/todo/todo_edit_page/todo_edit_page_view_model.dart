@@ -15,6 +15,8 @@ class TodoEditPageState with _$TodoEditPageState {
 }
 
 /// TodoEditPage の ViewModel.
+///
+/// 指定した一つのTodoIDに対応する編集画面のViewModelである。
 @riverpod
 class TodoEditPageViewModel extends _$TodoEditPageViewModel {
   @override
@@ -26,15 +28,18 @@ class TodoEditPageViewModel extends _$TodoEditPageViewModel {
   }
 
   /// Todo を更新する。
-  Future<void> updateTodo(Todo todo) async {
-    // family providerなのでbuildするときにtodoIdが渡される。
+  Future<void> updateTodo({
+    required String title,
+    required String description,
+    required String status,
+  }) async {
     await ref
         .read(todoRepositoryProvider)
         .updateTodo(
           id: todoId,
-          title: todo.title,
-          description: todo.description,
-          status: todo.status.name,
+          title: title,
+          description: description,
+          status: status,
         );
     ref.invalidateSelf();
   }

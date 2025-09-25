@@ -21,21 +21,10 @@ class TodoRepository {
 
   final Ref _ref;
 
-  /// Todo 用のカスタムエラーマッパー
-  static final ErrorMapper _todoErrorMapper = createErrorMapper({
-    'endpoint.getTodos.fetchFailed.1': () => FetchTodos400Exception(),
-
-    //  サンプル
-    'endpoint.getTodo.notFound.1': () => FetchTodoNotFoundException(),
-    'endpoint.updateTodo.notFound.1': () => UpdateTodoNotFoundException(),
-    'endpoint.deleteTodo.notFound.1': () => DeleteTodoNotFoundException(),
-  });
-
   /// Todo 一覧を取得する。
   ///
   /// 取得に失敗した場合は、空の配列を返す。
   Future<List<Todo>> fetchTodos() async {
-    // これを省略したい場合、ヘルパークラスを作成するのもあり
     final headers = await _ref.read(extractHttpRequestHeadersProvider)();
 
     try {
@@ -47,7 +36,17 @@ class TodoRepository {
       return response.data?.todos.map(Todo.fromDto).toList() ?? [];
     } on DioException catch (e) {
       // DioException共通に処理する repository util
-      handleDioException(e, errorMapper: _todoErrorMapper);
+      throwByDioException(
+        e,
+        onErrorCode: (errorCode) {
+          switch (errorCode) {
+            case 'endpoint.getTodos.fetchFailed.1':
+              throw FetchTodos400Exception();
+            default:
+              throw FetchTodosGeneralException();
+          }
+        },
+      );
     } catch (e) {
       throw FetchTodosGeneralException();
     }
@@ -73,7 +72,17 @@ class TodoRepository {
       return Todo.fromDto(response.data!.todo);
     } on DioException catch (e) {
       // DioException共通に処理する repository util
-      handleDioException(e, errorMapper: _todoErrorMapper);
+      throwByDioException(
+        e,
+        onErrorCode: (errorCode) {
+          switch (errorCode) {
+            case 'endpoint.getTodo.notFound.1':
+              throw FetchTodoNotFoundException();
+            default:
+              throw FetchTodosGeneralException();
+          }
+        },
+      );
     } catch (e) {
       throw FetchTodosGeneralException();
     }
@@ -107,7 +116,7 @@ class TodoRepository {
           );
     } on DioException catch (e) {
       // DioException共通に処理する repository util
-      handleDioException(e, errorMapper: _todoErrorMapper);
+      throwByDioException(e);
     } catch (e) {
       throw CreateTodoGeneralException();
     }
@@ -141,7 +150,17 @@ class TodoRepository {
           );
     } on DioException catch (e) {
       // DioException共通に処理する repository util
-      handleDioException(e, errorMapper: _todoErrorMapper);
+      throwByDioException(
+        e,
+        onErrorCode: (errorCode) {
+          switch (errorCode) {
+            case 'endpoint.updateTodo.notFound.1':
+              throw UpdateTodoNotFoundException();
+            default:
+              throw FetchTodosGeneralException();
+          }
+        },
+      );
     } catch (e) {
       throw UpdateTodoGeneralException();
     }
@@ -160,7 +179,17 @@ class TodoRepository {
           .deleteApiTodosByTodoId(todoId: id, headers: headers);
     } on DioException catch (e) {
       // DioException共通に処理する repository util
-      handleDioException(e, errorMapper: _todoErrorMapper);
+      throwByDioException(
+        e,
+        onErrorCode: (errorCode) {
+          switch (errorCode) {
+            case 'endpoint.deleteTodo.notFound.1':
+              throw DeleteTodoNotFoundException();
+            default:
+              throw FetchTodosGeneralException();
+          }
+        },
+      );
     } catch (e) {
       throw DeleteTodoGeneralException();
     }
