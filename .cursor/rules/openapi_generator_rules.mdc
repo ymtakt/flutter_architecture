@@ -1,0 +1,8 @@
+---
+description: Open API generatorの実装ルール
+alwaysApply: false
+---
+
+# ルールの内容
+
+ルールの内容は [docs/openapi_generator_rules.md](../../docs/openapi_generator_rules.md) に従います。

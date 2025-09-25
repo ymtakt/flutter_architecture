@@ -1,0 +1,10 @@
+---
+description: テストの実装
+globs: test/**
+alwaysApply: false
+redirect: docs/test_rules.md
+---
+
+# ルールの内容
+
+ルールの内容は [docs/test_rules.md](../../docs/test_rules.md) に従います。

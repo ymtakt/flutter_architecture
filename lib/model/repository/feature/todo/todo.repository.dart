@@ -29,7 +29,6 @@ class TodoRepository {
 
     try {
       final response = await _ref
-          //  httpClientProviderがserviceProviderになるはず
           .read(httpClientProvider)
           .getTodosApi()
           .getApiTodos(headers: headers);

@@ -7,7 +7,7 @@ part of 'todo_edit_page_view_model.dart';
 // **************************************************************************
 
 String _$todoEditPageViewModelHash() =>
-    r'08f0582cc25641f7d7c67510ba4aa86126ac0eae';
+    r'82d31f7c348a5a546bbe97d1f6c165cacd57d33b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,21 +41,29 @@ abstract class _$TodoEditPageViewModel
 
 /// TodoEditPage の ViewModel.
 ///
+/// 指定した一つのTodoIDに対応する編集画面のViewModelである。
+///
 /// Copied from [TodoEditPageViewModel].
 @ProviderFor(TodoEditPageViewModel)
 const todoEditPageViewModelProvider = TodoEditPageViewModelFamily();
 
 /// TodoEditPage の ViewModel.
 ///
+/// 指定した一つのTodoIDに対応する編集画面のViewModelである。
+///
 /// Copied from [TodoEditPageViewModel].
 class TodoEditPageViewModelFamily
     extends Family<AsyncValue<TodoEditPageState>> {
   /// TodoEditPage の ViewModel.
   ///
+  /// 指定した一つのTodoIDに対応する編集画面のViewModelである。
+  ///
   /// Copied from [TodoEditPageViewModel].
   const TodoEditPageViewModelFamily();
 
   /// TodoEditPage の ViewModel.
+  ///
+  /// 指定した一つのTodoIDに対応する編集画面のViewModelである。
   ///
   /// Copied from [TodoEditPageViewModel].
   TodoEditPageViewModelProvider call(
@@ -92,11 +100,15 @@ class TodoEditPageViewModelFamily
 
 /// TodoEditPage の ViewModel.
 ///
+/// 指定した一つのTodoIDに対応する編集画面のViewModelである。
+///
 /// Copied from [TodoEditPageViewModel].
 class TodoEditPageViewModelProvider
     extends AutoDisposeAsyncNotifierProviderImpl<TodoEditPageViewModel,
         TodoEditPageState> {
   /// TodoEditPage の ViewModel.
+  ///
+  /// 指定した一つのTodoIDに対応する編集画面のViewModelである。
   ///
   /// Copied from [TodoEditPageViewModel].
   TodoEditPageViewModelProvider(
