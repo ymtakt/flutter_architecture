@@ -5,9 +5,18 @@ import 'package:flutter_architecture/ui/routing/router_path.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// Todo 一覧画面のページウィジェット。
+///
+/// Todo の一覧表示と詳細画面・登録画面への遷移機能を提供する。
+/// ViewModel から状態を監視し、ローディング・エラー状態に応じた UI を表示する。
 class TodoPage extends ConsumerWidget {
+  /// [TodoPage] を生成する。
   const TodoPage({super.key});
 
+  /// Todo 一覧画面の UI を構築する。
+  ///
+  /// ViewModel の状態に応じて Todo 一覧、ローディングインジケータ、
+  /// エラーメッセージのいずれかを表示する。
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(todoPageViewModelProvider);

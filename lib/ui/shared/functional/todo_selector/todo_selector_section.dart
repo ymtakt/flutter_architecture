@@ -6,7 +6,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'todo_selector_section_handler.dart';
 import 'todo_selector_section_view_model.dart';
 
+/// Todo 選択セクションコンポーネント。
+///
+/// Todo 一覧を表示して選択機能を提供する共通コンポーネント。
+/// 完了済みの Todo の表示/非表示を制御でき、選択時のコールバックを受け取る。
 class TodoSelectorSection extends ConsumerWidget {
+  /// [TodoSelectorSection] を生成する。
   const TodoSelectorSection({
     super.key,
     this.onTodoSelected,
@@ -14,10 +19,19 @@ class TodoSelectorSection extends ConsumerWidget {
     this.showCompleted = true,
   });
 
+  /// Todo が選択されたときに実行されるコールバック関数。
   final Function(Todo)? onTodoSelected;
+  
+  /// セクションのタイトル。
   final String title;
+  
+  /// 完了済み Todo を表示するかどうか。
   final bool showCompleted;
 
+  /// Todo 選択セクションの UI を構築する。
+  ///
+  /// ViewModel から Todo データを取得し、フィルタリングした一覧を表示する。
+  /// 各 Todo はタップで選択でき、Handler を通じて処理される。
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(todoSelectorSectionViewModelProvider);

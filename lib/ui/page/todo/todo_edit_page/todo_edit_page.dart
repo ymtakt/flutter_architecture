@@ -5,11 +5,21 @@ import 'package:flutter_architecture/ui/page/todo/todo_edit_page/todo_edit_page_
 import 'package:flutter_architecture/ui/page/todo/todo_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// Todo 編集画面のページウィジェット。
+///
+/// 指定された ID の Todo の編集フォームを提供する。
+/// 既存の Todo データを取得してフォームに設定し、更新処理を実行する。
 class TodoEditPage extends ConsumerWidget {
+  /// [TodoEditPage] を生成する。
   const TodoEditPage({super.key, required this.todoId});
 
+  /// 編集する Todo の ID。
   final String todoId;
 
+  /// Todo 編集画面の UI を構築する。
+  ///
+  /// ViewModel から Todo データを取得し、TodoForm を使用して
+  /// 編集フォームを表示する。更新処理は Handler に委譲する。
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(todoEditPageViewModelProvider(todoId));

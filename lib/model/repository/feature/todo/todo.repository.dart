@@ -19,6 +19,7 @@ class TodoRepository {
   /// [TodoRepository] を生成する。
   const TodoRepository(this._ref);
 
+  /// Riverpod の Ref インスタンス。
   final Ref _ref;
 
   /// Todo 一覧を取得する。

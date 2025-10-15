@@ -3,11 +3,13 @@ import 'package:miracle_api_client/miracle_api_client.dart';
 
 part 'todo.freezed.dart';
 
+/// Todo の状態を表す列挙型。
 enum TodoStatus {
   notStarted,
   inProgress,
   done;
 
+  /// 状態を日本語の文字列に変換する。
   @override
   String toString() {
     switch (this) {
@@ -20,6 +22,7 @@ enum TodoStatus {
     }
   }
 
+  /// 状態の名前。
   String get name => toString();
 }
 
@@ -35,7 +38,8 @@ class Todo with _$Todo {
   }) = _Todo;
 
   /// [GetApiTodos200ResponseTodosInner] から [Todo] を生成する。
-  /// API ModelなのでfromAPIModelと命名するルールにする（公式通り）
+  ///
+  /// API Model なので fromAPIModel と命名するルールにする（公式通り）。
   factory Todo.fromDto(GetApiTodos200ResponseTodosInner dto) => Todo(
     id: dto.id.toString(),
     title: dto.title,

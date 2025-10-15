@@ -6,6 +6,10 @@ import 'package:flutter_architecture/ui/page/todo/todo_register_page/todo_regist
 import 'package:flutter_architecture/ui/routing/router_path.dart';
 import 'package:go_router/go_router.dart';
 
+/// アプリケーションのルーティング設定。
+///
+/// GoRouter を使用してアプリケーション内の画面遷移を管理する。
+/// 各ルートパスに対応する画面コンポーネントを定義している。
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
     GoRoute(

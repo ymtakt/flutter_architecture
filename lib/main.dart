@@ -6,6 +6,10 @@ import 'package:flutter_architecture/ui/routing/router.dart';
 import 'package:flutter_architecture/util/logger.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// アプリケーションのエントリポイント。
+///
+/// Flavor の設定、HTTP クライアントの初期化、Riverpod の設定を行い、
+/// Flutter アプリケーションを起動する。
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -34,9 +38,17 @@ Future<void> main() async {
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
+/// アプリケーションのルートウィジェット。
+///
+/// MaterialApp の設定とルーティング設定を提供する。
 class MyApp extends StatelessWidget {
+  /// [MyApp] を生成する。
   const MyApp({super.key});
 
+  /// アプリケーションのルートウィジェットを構築する。
+  ///
+  /// MaterialApp.router を使用してルーティング機能付きの
+  /// アプリケーションを構築する。
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

@@ -4,7 +4,12 @@ import 'package:flutter_architecture/ui/shared/functionless/common_select_box.da
 import 'package:flutter_architecture/ui/shared/functionless/common_text_field.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+/// Todo の入力フォームコンポーネント。
+///
+/// Todo の作成・編集に使用する共通のフォームを提供する。
+/// 初期データを渡すことで編集モードとして使用できる。
 class TodoForm extends HookWidget {
+  /// [TodoForm] を生成する。
   const TodoForm({
     super.key,
     required this.handleSubmit,
@@ -12,10 +17,19 @@ class TodoForm extends HookWidget {
     this.initialTodoData,
   });
 
+  /// フォームの初期データ。編集モードの場合に指定する。
   final Todo? initialTodoData;
+  
+  /// フォーム送信時に実行される処理。
   final Function(Todo) handleSubmit;
+  
+  /// 送信ボタンに表示するテキスト。
   final String submitButtonText;
 
+  /// Todo フォームウィジェットを構築する。
+  ///
+  /// Todo の入力フィールドと送信ボタンを含む
+  /// フォーム UI を構築する。
   @override
   Widget build(BuildContext context) {
     // エフェメラルステートとしてフォームの状態を管理

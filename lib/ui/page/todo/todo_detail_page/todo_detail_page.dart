@@ -6,11 +6,21 @@ import 'package:flutter_architecture/ui/routing/router_path.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// Todo 詳細画面のページウィジェット。
+///
+/// 指定された ID の Todo の詳細情報を表示し、編集・削除機能を提供する。
+/// ViewModel から Todo データを取得し、Handler を通じて各種操作を実行する。
 class TodoDetailPage extends ConsumerWidget {
+  /// [TodoDetailPage] を生成する。
   const TodoDetailPage({super.key, required this.todoId});
 
+  /// 表示する Todo の ID。
   final String todoId;
 
+  /// Todo 詳細画面の UI を構築する。
+  ///
+  /// ViewModel から Todo データを取得し、詳細情報の表示、
+  /// 編集・削除ボタンの配置を行う。
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // ViewModel を watch する。
